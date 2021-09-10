@@ -71,7 +71,7 @@ namespace Stock
         public string BrokerName { get => BrokerName; set => BrokerName = value; }
 
         public List<Stock> stocks = new List<Stock>();
-        public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim(); readonly string docPath = @"C:\Users\Documents\CECS 475\Lab3_output.txt";
+        public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim(); readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
 "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
 
