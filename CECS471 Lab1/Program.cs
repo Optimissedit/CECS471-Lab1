@@ -34,9 +34,8 @@ namespace Stock
             NumChanges = 0;
             CurrentValue = startingValue;
 
-            ThreadStart threadRef = new ThreadStart(Activate);
-            Thread stockThread = new Thread(threadRef);
-            stockThread.Start();
+            _thread = new Thread(new ThreadStart(Activate));
+            _thread.Start();
         }
 
         /// <summary>
@@ -59,6 +58,7 @@ namespace Stock
             var rand = new Random();
             CurrentValue += rand.Next(0, MaxChange);
             NumChanges++;
+
             if ((CurrentValue - InitialValue) > Threshold)
             {
                 StockEvent?.Invoke(this, new StockNotification(StockName, CurrentValue, NumChanges));
@@ -69,6 +69,7 @@ namespace Stock
     public class StockBroker
     {
         public string BrokerName { get => BrokerName; set => BrokerName = value; }
+
         public List<Stock> stocks = new List<Stock>();
         public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim(); readonly string docPath = @"C:\Users\Documents\CECS 475\Lab3_output.txt";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
@@ -108,6 +109,7 @@ namespace Stock
             { 
                 outputFile.WriteLine(output);
             }
+
             Console.WriteLine(output);
             myLock.ExitWriteLock();
         }
