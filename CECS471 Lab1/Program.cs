@@ -29,10 +29,12 @@ namespace Stock
         {
             StockName = name;
             InitialValue = startingValue;
+
             MaxChange = maxChange;
             Threshold = threshold;
             NumChanges = 0;
             CurrentValue = startingValue;
+
 
             _thread = new Thread(new ThreadStart(Activate));
             _thread.Start();
