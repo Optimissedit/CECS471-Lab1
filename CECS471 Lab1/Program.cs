@@ -23,6 +23,12 @@ namespace Stock
         /// <param name="threshold">The range for the stock</param>
         public Stock(string name, int startingValue, int maxChange, int threshold)
         {
+            StockName = name;
+            InitialValue = startingValue;
+            CurrentValue = startingValue;
+            MaxChange = maxChange;
+            Threshold = threshold;
+            NumChanges = 0;
 
         }
         /// <summary>
