@@ -44,7 +44,9 @@ namespace Stock
         {
             for (int i = 0; i < 25; i++)
             {
+                //Console.WriteLine("Thread " + Thread.CurrentThread + " is waiting 500ms");
                 Thread.Sleep(500); // 1/2 second
+                //Console.WriteLine("Thread " + Thread.CurrentThread + " resumes");
                 //Call the function ChangeStockValue
                 ChangeStockValue();
             }
@@ -72,7 +74,8 @@ namespace Stock
 
         public List<Stock> stocks = new List<Stock>();
         public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim();
-        readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
+        //readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
+        readonly string docPath = @"";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
 "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
 
@@ -120,9 +123,9 @@ namespace Stock
     public class StockNotification : EventArgs
     {
 
-        public string StockName { get => StockName; set => StockName = value; }
-        public int CurrentValue { get => CurrentValue; set => CurrentValue = value; }
-        public int NumChanges { get => NumChanges; set => NumChanges = value; }
+        public string StockName { get; set; }
+        public int CurrentValue { get; set; }
+        public int NumChanges { get; set; }
         /// <summary>
         /// Stock notification attributes that are set and changed
         /// </summary>
