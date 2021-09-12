@@ -11,12 +11,12 @@ namespace Stock
         public event EventHandler<StockNotification> StockEvent;
 
         private readonly Thread _thread;
-        public string StockName { get => StockName; set => StockName = value; }
-        public int InitialValue { get => InitialValue; set => InitialValue = value; }
-        public int CurrentValue { get => CurrentValue; set => CurrentValue = value; }
-        public int MaxChange { get => MaxChange; set => MaxChange = value; }
-        public int Threshold { get => Threshold; set => Threshold = value; }
-        public int NumChanges { get => NumChanges; set => NumChanges = value; }
+        public string StockName { get; set; }
+        public int InitialValue { get; set; }
+        public int CurrentValue { get; set; }
+        public int MaxChange { get; set; }
+        public int Threshold { get; set; }
+        public int NumChanges { get; set; }
 
         /// <summary>
         /// Stock class that contains all the information and changes of the stock
@@ -29,13 +29,10 @@ namespace Stock
         {
             StockName = name;
             InitialValue = startingValue;
-
             MaxChange = maxChange;
             Threshold = threshold;
             NumChanges = 0;
             CurrentValue = startingValue;
-
-
             _thread = new Thread(new ThreadStart(Activate));
             _thread.Start();
         }
@@ -58,11 +55,12 @@ namespace Stock
         public void ChangeStockValue()
         {
             var rand = new Random();
-            CurrentValue += rand.Next(0, MaxChange);
+            CurrentValue += rand.Next(-MaxChange, MaxChange);
             NumChanges++;
 
             if ((CurrentValue - InitialValue) > Threshold)
             {
+                Console.WriteLine("Hit on Stock " + StockName);
                 StockEvent?.Invoke(this, new StockNotification(StockName, CurrentValue, NumChanges));
             }
         }
@@ -70,10 +68,11 @@ namespace Stock
 
     public class StockBroker
     {
-        public string BrokerName { get => BrokerName; set => BrokerName = value; }
+        public string BrokerName { get; set; }
 
         public List<Stock> stocks = new List<Stock>();
-        public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim(); readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
+        public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim();
+        readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
 "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
 
@@ -110,6 +109,7 @@ namespace Stock
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "output.txt"), true))
             { 
                 outputFile.WriteLine(output);
+                Console.WriteLine(output);
             }
 
             Console.WriteLine(output);
@@ -141,10 +141,10 @@ namespace Stock
     {
         static void Main(string[] args)
         {
-            Stock stock1 = new Stock("Technology", 160, 5, 15);
-            Stock stock2 = new Stock("Retail", 30, 2, 6);
-            Stock stock3 = new Stock("Banking", 90, 4, 10);
-            Stock stock4 = new Stock("Commodity", 500, 20, 50);
+            Stock stock1 = new Stock("Technology", 160, 10, 15);
+            Stock stock2 = new Stock("Retail", 30, 5, 6);
+            Stock stock3 = new Stock("Banking", 90, 8, 10);
+            Stock stock4 = new Stock("Commodity", 500, 35, 50);
 
             StockBroker b1 = new StockBroker("Broker 1");
             b1.AddStock(stock1);
