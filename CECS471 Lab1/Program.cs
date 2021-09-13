@@ -1,4 +1,11 @@
-﻿using System;
+﻿/// CECS 475
+/// Lab Assignment 1
+/// Assigned date: 1 / 26
+/// Due date: Monday, September 13
+///
+/// Team Members : Sam BLAWSKI, Zack HUNTER, Shujoy ISLAM, Tea LAUREY
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -44,9 +51,7 @@ namespace Stock
         {
             for (int i = 0; i < 25; i++)
             {
-                //Console.WriteLine("Thread " + Thread.CurrentThread + " is waiting 500ms");
                 Thread.Sleep(500); // 1/2 second
-                //Console.WriteLine("Thread " + Thread.CurrentThread + " resumes");
                 //Call the function ChangeStockValue
                 ChangeStockValue();
             }
