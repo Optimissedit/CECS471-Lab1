@@ -63,12 +63,12 @@ namespace Stock
         public void ChangeStockValue()
         {
             var rand = new Random();
-            CurrentValue += rand.Next(-MaxChange, MaxChange);
+            CurrentValue += rand.Next(-MaxChange - 1, MaxChange + 1);
             NumChanges++;
 
             if ((CurrentValue - InitialValue) > Threshold)
             {
-                Console.WriteLine("Hit on Stock " + StockName);
+                //Console.WriteLine("Hit on Stock " + StockName);
                 StockEvent?.Invoke(this, new StockNotification(StockName, CurrentValue, NumChanges));
             }
         }
@@ -80,10 +80,10 @@ namespace Stock
 
         public List<Stock> stocks = new List<Stock>();
         public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim();
-        readonly string docPath = @"D:\Users\Shujoy\Documents\CSULB Classes\CECS 475";
-        // readonly string docPath = @"";
+        //readonly string docPath = @"D:\Users\Shujoy\Documents\CSULB Classes\CECS 475";
+        readonly string docPath = @"";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
-"Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
+"Intial Value".PadRight(10) + "Current Value".PadRight(10) + "Date and Time";
 
         /// <summary>
         /// The stockbroker object
@@ -115,7 +115,7 @@ namespace Stock
             Stock nStock = (Stock)sender;
             String currentDateTime = DateTime.Now.ToString();
             string output = BrokerName.PadRight(10) + nStock.StockName.PadRight(12) + nStock.CurrentValue.ToString().PadRight(7) + nStock.NumChanges;
-            string textOutput = BrokerName.PadRight(10) + nStock.StockName.PadRight(15) + nStock.CurrentValue.ToString().PadRight(10) + nStock.NumChanges.ToString().PadRight(10) + currentDateTime;
+            string textOutput = BrokerName.PadRight(10) + nStock.StockName.PadRight(15) + nStock.InitialValue.ToString().PadRight(10) + nStock.CurrentValue.ToString().PadRight(10) + currentDateTime;
 
             if (!File.Exists(Path.Combine(docPath, "output.txt")))
             {
@@ -123,14 +123,16 @@ namespace Stock
                 {
                     outputFile.WriteLine(titles);
                 }
-            }
+            } 
+
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "output.txt"), true))
-            { 
+            {
+                // Writes new output to file
                 outputFile.WriteLine(textOutput);
                 Console.WriteLine(output);
             }
 
-            Console.WriteLine(output);
+
             myLock.ExitWriteLock();
         }
     }
@@ -159,10 +161,10 @@ namespace Stock
     {
         static void Main(string[] args)
         {
-            Stock stock1 = new Stock("Technology", 160, 10, 15);
-            Stock stock2 = new Stock("Retail", 30, 5, 6);
-            Stock stock3 = new Stock("Banking", 90, 8, 10);
-            Stock stock4 = new Stock("Commodity", 500, 35, 50);
+            Stock stock1 = new Stock("Technology", 160, 5, 15);
+            Stock stock2 = new Stock("Retail", 30, 2, 6);
+            Stock stock3 = new Stock("Banking", 90, 4, 10);
+            Stock stock4 = new Stock("Commodity", 500, 20, 50);
 
             StockBroker b1 = new StockBroker("Broker 1");
             b1.AddStock(stock1);
