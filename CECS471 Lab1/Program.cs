@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -79,8 +80,8 @@ namespace Stock
 
         public List<Stock> stocks = new List<Stock>();
         public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim();
-        //readonly string docPath = @"C:\Users\TeaLAUREY\Bureau\CECS 475\Lab1_output.txt";
-        readonly string docPath = @"";
+        readonly string docPath = @"D:\Users\Shujoy\Documents\CSULB Classes\CECS 475";
+        // readonly string docPath = @"";
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
 "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
 
@@ -112,11 +113,20 @@ namespace Stock
         {
             myLock.EnterWriteLock();
             Stock nStock = (Stock)sender;
+            String currentDateTime = DateTime.Now.ToString();
             string output = BrokerName.PadRight(10) + nStock.StockName.PadRight(12) + nStock.CurrentValue.ToString().PadRight(7) + nStock.NumChanges;
+            string textOutput = BrokerName.PadRight(10) + nStock.StockName.PadRight(15) + nStock.CurrentValue.ToString().PadRight(10) + nStock.NumChanges.ToString().PadRight(10) + currentDateTime;
 
+            if (!File.Exists(Path.Combine(docPath, "output.txt")))
+            {
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "output.txt"), true))
+                {
+                    outputFile.WriteLine(titles);
+                }
+            }
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "output.txt"), true))
             { 
-                outputFile.WriteLine(output);
+                outputFile.WriteLine(textOutput);
                 Console.WriteLine(output);
             }
 
