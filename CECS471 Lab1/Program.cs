@@ -65,7 +65,6 @@ namespace Stock
             var rand = new Random();
             CurrentValue += rand.Next(-MaxChange - 1, MaxChange + 1);
             NumChanges++;
-
             if ((CurrentValue - InitialValue) > Threshold)
             {
                 //Console.WriteLine("Hit on Stock " + StockName);
@@ -139,7 +138,6 @@ namespace Stock
 
     public class StockNotification : EventArgs
     {
-
         public string StockName { get; set; }
         public int CurrentValue { get; set; }
         public int NumChanges { get; set; }
@@ -147,7 +145,7 @@ namespace Stock
         /// Stock notification attributes that are set and changed
         /// </summary>
         /// <param name="stockName">Name of stock</param>
-        /// <param name="currentValue">Current vallue of the stock</param>
+        /// <param name="currentValue">Current value of the stock</param>
         /// <param name="numChanges">Number of changes the stock goes through</param>
         public StockNotification(string stockName, int currentValue, int numChanges)
         {
